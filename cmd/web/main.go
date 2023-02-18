@@ -13,13 +13,13 @@ func main() {
 	flag.Parse()
 
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
-	f, err := os.OpenFile("info.log", os.O_RDWR|os.O_CREATE, 0666)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer f.Close()
+	//f, err := os.OpenFile("/tmp/info.log", os.O_RDWR|os.O_CREATE, 0666)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//defer f.Close()
 
-	infoLog := log.New(f, "INFO\t", log.Ldate|log.Ltime)
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	mux := http.NewServeMux()
@@ -35,6 +35,6 @@ func main() {
 	}
 
 	infoLog.Printf("Starting server on %s", *addr)
-	err = srv.ListenAndServe()
+	err := srv.ListenAndServe()
 	errorLog.Fatal(err)
 }
